@@ -1,0 +1,33 @@
+{
+    "name": "guave/deepl-bundle",
+    "type": "contao-bundle",
+    "description": "Adds support for deepl.com translation to contao dca input fields",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Gebhard Nigsch",
+            "homepage": "https://github.com/guavestudios"
+        }
+    ],
+    "conflict": {
+        "contao/manager-plugin": "<2.0 || >=3.0"
+    },
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "terminal42/dc_multilingual": "^4.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "contao/manager-plugin": "^2.0"
+    },
+    "extra": {
+        "contao-manager-plugin": "Guave\\DeeplBundle\\ContaoManager\\Plugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Guave\\DeeplBundle\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
