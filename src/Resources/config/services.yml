@@ -13,3 +13,6 @@ services:
         resource: ../../../src/Controller
         tags: [ 'controller.service_arguments' ]
         public: true
+
+    Guave\DeeplBundle\EventListener\LoadFallbackTranslationsListener:
+        public: true

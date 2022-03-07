@@ -7,6 +7,7 @@ namespace Guave\DeeplBundle\Controller\Backend;
 use Contao\ArticleModel;
 use Contao\Backend;
 use Contao\ContentModel;
+use Contao\Controller;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Image;
@@ -45,6 +46,8 @@ class DeeplButtons extends Backend
             return;
         }
 
+        Controller::loadLanguageFile('modules');
+
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/guavedeepl/assets/translate.js';
 
         foreach ($this->tables[$dc->table]['fields'] as $field) {
@@ -63,10 +66,15 @@ class DeeplButtons extends Backend
 
     public function addTranslateAllButton($arrButtons)
     {
-        $arrButtons['translateAll'] =  sprintf(
-            '<button type="button" data-translate-all data-translate-target-lang="'.$this->activeLang.'" class="tl_submit" accesskey="a">Alle Übersetzen von de nach %s %s</button>',
+        $arrButtons['translateAll'] = sprintf(
+            '<button type="button" data-translate-all data-translate-target-lang="%s" class="tl_submit" accesskey="a">%s</button>',
             $this->activeLang,
-            Image::getHtml('pasteinto.svg')
+            sprintf(
+                $GLOBALS['TL_LANG']['guave_deepl']['translateAll'][0],
+                $this->defaultLanguage,
+                $this->activeLang,
+                Image::getHtml('pasteinto.svg')
+            )
         );
 
         return $arrButtons;
@@ -75,10 +83,15 @@ class DeeplButtons extends Backend
     public function getTranslateButton(string $field): string
     {
         return sprintf(
-            '<span data-translate-field="%s" data-translate-target-lang="' . $this->activeLang . '">Übersetzen von de nach %s %s</span>',
+            '<span data-translate-field="%s" data-translate-target-lang="%s">%s</span>',
             $field,
             $this->activeLang,
-            Image::getHtml('pasteinto.svg')
+            sprintf(
+                $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
+                $this->defaultLanguage,
+                $this->activeLang,
+                Image::getHtml('pasteinto.svg')
+            )
         );
     }
 

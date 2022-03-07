@@ -28,6 +28,11 @@ class LoadDataContainerListener
 
         if (array_key_exists($table, $this->tables)) {
             $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [DeeplButtons::class, 'registerDeepl'];
+
+            // register fallback translation
+            if ($GLOBALS['TL_DCA'][$table]['config']['dataContainer'] === 'Multilingual') {
+                $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [LoadFallbackTranslationsListener::class, 'loadFallbackTranslation'];
+            }
         }
     }
 }

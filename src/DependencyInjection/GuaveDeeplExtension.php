@@ -6,6 +6,7 @@ namespace Guave\DeeplBundle\DependencyInjection;
 
 use Guave\DeeplBundle\Controller\Backend\DeeplButtons;
 use Guave\DeeplBundle\EventListener\LoadDataContainerListener;
+use Guave\DeeplBundle\EventListener\LoadFallbackTranslationsListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -29,5 +30,8 @@ class GuaveDeeplExtension extends ConfigurableExtension
         $definition2 = $container->getDefinition(DeeplButtons::class);
         $definition2->setArgument(0, $mergedConfig['defaultLanguage']);
         $definition2->setArgument(1, $mergedConfig['tables']);
+
+        $definition3 = $container->getDefinition(LoadFallbackTranslationsListener::class);
+        $definition3->setArgument(0, $mergedConfig['defaultLanguage']);
     }
 }

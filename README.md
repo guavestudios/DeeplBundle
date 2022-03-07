@@ -2,6 +2,8 @@
 
 Adds support for deepl.com translation to contao dca input fields
 
+also supports Multilingual data container
+
 ## Install
 
 
