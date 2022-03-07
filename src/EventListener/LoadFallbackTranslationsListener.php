@@ -87,7 +87,7 @@ class LoadFallbackTranslationsListener
         $objSessionBag = $this->session->getBag('contao_backend');
         $sessionKey = 'dc_multilingual:tl_teaser:' . $id;
 
-        return $objSessionBag->get($sessionKey);
+        return $objSessionBag->get($sessionKey) ?? $this->defaultLanguage;
     }
 
     protected function getModel(string $table, int $id): ?Model
