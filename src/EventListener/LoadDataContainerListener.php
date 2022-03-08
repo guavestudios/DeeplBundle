@@ -21,7 +21,7 @@ class LoadDataContainerListener
         $this->enabled = $enabled;
         $this->tables = $tables;
     }
-    
+
     public function __invoke(string $table): void
     {
         if (!$this->enabled) {
@@ -29,6 +29,10 @@ class LoadDataContainerListener
         }
 
         if (!Input::get('do')) {
+            return;
+        }
+
+        if (Input::get('act') !== 'edit') {
             return;
         }
 
@@ -42,10 +46,13 @@ class LoadDataContainerListener
             }
         }
 
-        $moduleTable = $arrModule['tables'][0] ?? null;
-        if ($table !== $moduleTable) {
+        $moduleTable = Input::get('table') ?? $arrModule['tables'][0];
+
+        if ($moduleTable !== $table) {
             return;
         }
+
+        dump($table);
 
         if (array_key_exists($table, $this->tables)) {
             $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [DeeplButtons::class, 'registerDeepl'];
