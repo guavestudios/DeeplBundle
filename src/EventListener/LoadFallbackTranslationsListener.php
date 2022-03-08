@@ -39,7 +39,7 @@ class LoadFallbackTranslationsListener
         }
 
         $id = (int) $dc->id;
-        $activeLang = $this->getActiveLang($id);
+        $activeLang = $this->getActiveLang($dc->table, $id);
         if ($activeLang === $this->defaultLanguage) {
             return;
         }
@@ -82,10 +82,11 @@ class LoadFallbackTranslationsListener
         }
     }
 
-    protected function getActiveLang(int $id): string
+    protected function getActiveLang(string $table, int $id): string
     {
         $objSessionBag = $this->session->getBag('contao_backend');
-        $sessionKey = 'dc_multilingual:tl_teaser:' . $id;
+        $sessionKey = 'dc_multilingual:' . $table . ':' . $id;
+
 
         return $objSessionBag->get($sessionKey) ?? $this->defaultLanguage;
     }
