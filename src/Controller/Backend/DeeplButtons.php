@@ -101,7 +101,7 @@ class DeeplButtons extends Backend
 
         if ($dc instanceof DC_Multilingual) {
             $objSessionBag = $this->session->getBag('contao_backend');
-            $sessionKey = 'dc_multilingual:tl_teaser:' . $dc->id;
+            $sessionKey = 'dc_multilingual:' . $dc->table . ':' . $dc->id;
             if ($objSessionBag->get($sessionKey)) {
                 $language = $objSessionBag->get($sessionKey);
             }
