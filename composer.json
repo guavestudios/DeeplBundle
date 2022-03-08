@@ -15,7 +15,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "terminal42/dc_multilingual": "^4.0",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "^6.0 || ^7.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
