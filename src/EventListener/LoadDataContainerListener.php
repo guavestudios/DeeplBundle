@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guave\DeeplBundle\EventListener;
 
 use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\Input;
 use Guave\DeeplBundle\Controller\Backend\DeeplButtons;
 
 /**
