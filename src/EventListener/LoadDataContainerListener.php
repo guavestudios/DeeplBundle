@@ -25,6 +25,10 @@ class LoadDataContainerListener
         if (!$this->enabled) {
             return;
         }
+        
+        if ($table !== Input::get('table')) {
+            return;
+        }
 
         if (array_key_exists($table, $this->tables)) {
             $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [DeeplButtons::class, 'registerDeepl'];
