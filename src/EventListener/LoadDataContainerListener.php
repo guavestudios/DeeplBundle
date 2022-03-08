@@ -21,13 +21,29 @@ class LoadDataContainerListener
         $this->enabled = $enabled;
         $this->tables = $tables;
     }
+    
     public function __invoke(string $table): void
     {
         if (!$this->enabled) {
             return;
         }
-        
-        if ($table !== Input::get('table')) {
+
+        if (!Input::get('do')) {
+            return;
+        }
+
+        $module = Input::get('do');
+        $arrModule = [];
+
+        foreach ($GLOBALS['BE_MOD'] as &$arrGroup) {
+            if (isset($arrGroup[$module])) {
+                $arrModule = &$arrGroup[$module];
+                break;
+            }
+        }
+
+        $moduleTable = $arrModule['tables'][0] ?? null;
+        if ($table !== $moduleTable) {
             return;
         }
 
