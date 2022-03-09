@@ -112,6 +112,9 @@ class DeeplButtons extends Backend
             } elseif ($dc->table === ArticleModel::getTable()) {
                 $article = ArticleModel::findOneBy('id', $dc->id);
                 $language = $this->getRootLanguageFromPage((int) $article->pid);
+            } elseif ($dc->table === PageModel::getTable()) {
+                $page = PageModel::findOneBy('id', $dc->id);
+                $language = $this->getRootLanguageFromPage((int) $page->id);
             }
         }
 
