@@ -106,7 +106,8 @@ class DeeplButtons extends Backend
                 $language = $objSessionBag->get($sessionKey);
             }
         } elseif ($dc instanceof DC_Table) {
-            if ($dc->table === ContentModel::getTable()) {
+            // for now only allow tl_content from tl_article
+            if ($dc->table === ContentModel::getTable() && $dc->parentTable === ArticleModel::getTable()) {
                 $content = ContentModel::findOneBy('id', $dc->id);
                 $language = $this->getRootLanguageFromArticle((int) $content->pid);
             } elseif ($dc->table === ArticleModel::getTable()) {
