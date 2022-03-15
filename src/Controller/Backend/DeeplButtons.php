@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace Guave\DeeplBundle\Controller\Backend;
 
-use Contao\ArticleModel;
 use Contao\Backend;
-use Contao\ContentModel;
 use Contao\Controller;
 use Contao\DataContainer;
-use Contao\DC_Table;
 use Contao\Image;
-use Contao\PageModel;
-use DC_Multilingual;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Guave\DeeplBundle\Resolver\ActiveLanguageResolverInterface;
 
 class DeeplButtons extends Backend
 {
@@ -24,13 +18,13 @@ class DeeplButtons extends Backend
 
     protected string $activeLang;
 
-    protected SessionInterface $session;
+    protected iterable $activeLanguageResolver;
 
-    public function __construct(string $defaultLanguage, array $tables, SessionInterface $session)
+    public function __construct(string $defaultLanguage, array $tables, iterable $activeLanguageResolver)
     {
         $this->defaultLanguage = $defaultLanguage;
         $this->tables = $tables;
-        $this->session = $session;
+        $this->activeLanguageResolver = $activeLanguageResolver;
 
         parent::__construct();
     }
@@ -97,50 +91,23 @@ class DeeplButtons extends Backend
 
     protected function getActiveLang(DataContainer $dc): string
     {
-        $language = $this->defaultLanguage;
+        $language = null;
 
-        if ($dc instanceof DC_Multilingual) {
-            $objSessionBag = $this->session->getBag('contao_backend');
-            $sessionKey = 'dc_multilingual:' . $dc->table . ':' . $dc->id;
-            if ($objSessionBag->get($sessionKey)) {
-                $language = $objSessionBag->get($sessionKey);
+        /** @var ActiveLanguageResolverInterface $resolver */
+        foreach ($this->activeLanguageResolver as $resolver) {
+            if (!$resolver->supports($dc)) {
+                continue;
             }
-        } elseif ($dc instanceof DC_Table) {
-            // for now only allow tl_content from tl_article
-            if ($dc->table === ContentModel::getTable() && $dc->parentTable === ArticleModel::getTable()) {
-                $content = ContentModel::findOneBy('id', $dc->id);
-                $language = $this->getRootLanguageFromArticle((int) $content->pid);
-            } elseif ($dc->table === ArticleModel::getTable()) {
-                $article = ArticleModel::findOneBy('id', $dc->id);
-                $language = $this->getRootLanguageFromPage((int) $article->pid);
-            } elseif ($dc->table === PageModel::getTable()) {
-                $page = PageModel::findOneBy('id', $dc->id);
-                $language = $this->getRootLanguageFromPage((int) $page->id);
-            }
+
+            $language = $resolver->resolve($dc);
+        }
+
+        if (!$language) {
+            $language = $this->defaultLanguage;
         }
 
         $this->activeLang = $language;
 
         return $this->activeLang;
-    }
-
-    protected function getRootLanguageFromArticle(int $id): string
-    {
-        $article = ArticleModel::findOneBy('id', $id);
-        if (!$article) {
-            throw new NotFoundHttpException(sprintf('page with id %s not found', $id));
-        }
-        return $this->getRootLanguageFromPage((int) $article->pid);
-    }
-
-    protected function getRootLanguageFromPage(int $id): string
-    {
-        $page = PageModel::findOneBy('id', $id);
-        if (!$page) {
-            throw new NotFoundHttpException(sprintf('page with id %s not found', $id));
-        }
-        $page->loadDetails();
-
-        return $page->rootLanguage;
     }
 }

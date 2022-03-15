@@ -4,6 +4,7 @@ services:
         autowire: true
         bind:
             $deeplApiKey: '%env(DEEPL_API_KEY)%'
+            $activeLanguageResolver: !tagged_iterator deepl.resolver
 
     Guave\DeeplBundle\:
         resource: ../../../src
@@ -16,3 +17,13 @@ services:
 
     Guave\DeeplBundle\EventListener\LoadFallbackTranslationsListener:
         public: true
+
+    Guave\DeeplBundle\Resolver\ActiveLanguageByDCMultilingualResolver:
+        public: true
+        tags:
+            - { name: 'deepl.resolver', priority: 20 }
+
+    Guave\DeeplBundle\Resolver\ActiveLanguageByPageOrArticleOrArticleContentResolver:
+        public: true
+        tags:
+            - { name: 'deepl.resolver', priority: 19 }

@@ -33,3 +33,43 @@ guave_deepl:
                 - title
                 - text
 ```
+
+
+## Register Custom ActiveLanguageResolver
+register it with tag 'deepl.resolver' and implmenet
+
+```yaml
+#services.yml
+services:
+    # ...
+
+    App\Resolver\ActiveLanguageByProductLanguageResolver:
+        public: true
+        tags:
+            - { name: 'deepl.resolver', priority: 50 }
+
+```
+
+
+```php
+<?php
+#src/Resolver/ActiveLanguageByProductLanguageResolver.php
+namespace App\Resolver;
+
+use Contao\DataContainer;
+use Guave\DeeplBundle\Resolver\ActiveLanguageResolverInterface;
+
+class ActiveLanguageByProductLanguageResolver implements ActiveLanguageResolverInterface
+{
+    public function supports(DataContainer $dataContainer): bool
+    {
+        // TODO: Implement supports() method.
+    }
+
+    public function resolve(DataContainer $dataContainer): ?string
+    {
+        // TODO: Implement resolve() method.
+    }}
+}
+
+```
