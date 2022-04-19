@@ -18,6 +18,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('enabled')->defaultValue(false)->end()
+                ->booleanNode('freeApi')->defaultValue(false)->end()
                 ->scalarNode('defaultLanguage')->defaultValue('de')->end()
                 ->arrayNode('tables')
                     ->useAttributeAsKey('table')->arrayPrototype()

@@ -14,11 +14,16 @@ class DeeplApi
 {
     protected string $apiKey;
 
-    public function __construct(string $deeplApiKey)
+    public function __construct(string $deeplApiKey, bool $freeApi = false)
     {
+        $url = 'https://api.deepl.com';
+        if ($freeApi) {
+            $url = 'https://api-free.deepl.com';
+        }
+
         $this->client = new Client(
             [
-                'base_uri' => 'https://api-free.deepl.com',
+                'base_uri' => $url,
                 'timeout' => 8.0,
             ]
         );

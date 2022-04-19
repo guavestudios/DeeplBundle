@@ -26,6 +26,7 @@ php vendor/bin/contao-console assets:install
 ```yaml
 guave_deepl:
     enabled: true
+    freeApi: true
     defaultLanguage: de
     tables:
         tl_content:
