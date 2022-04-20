@@ -74,8 +74,7 @@ class LoadFallbackTranslationsListener
 
         if ($save) {
             if ($mode === 'insert') {
-                $activeLangModel->setRow($params);
-                $activeLangModel->save();
+                Database::getInstance()->prepare('INSERT INTO ' . $dc->table . ' %s')->set($params)->execute();
             } else {
                 Database::getInstance()->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ? LIMIT 1')->set($params)->execute((int) $activeLangModel->id);
             }
