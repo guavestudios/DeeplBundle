@@ -54,7 +54,11 @@ class DeeplButtons extends Backend
     public function translateButton(DataContainer $dc)
     {
         $field = $dc->field;
-
+        // inputUnit
+        if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['inputType'] === 'inputUnit') {
+            $field.='[value]';
+        }
+        
         return $this->getTranslateButton($field);
     }
 
