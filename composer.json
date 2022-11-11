@@ -1,33 +1,43 @@
 {
-    "name": "guave/deepl-bundle",
-    "type": "contao-bundle",
-    "description": "Adds support for deepl.com translation to contao dca input fields",
-    "license": "LGPL-3.0-or-later",
-    "authors": [
-        {
-            "name": "Gebhard Nigsch",
-            "homepage": "https://github.com/guavestudios"
-        }
+  "name": "guave/deepl-bundle",
+  "description": "Adds support for deepl.com translation to contao dca input fields",
+  "type": "contao-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gebhard Nigsch",
+      "homepage": "https://github.com/guavestudios"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "contao/core-bundle": "^4.9",
+    "terminal42/dc_multilingual": "^4.0",
+    "guzzlehttp/guzzle": "^6.0 || ^7.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "autoload": {
+    "psr-4": {
+      "Guave\\DeeplBundle\\": "src/"
+    },
+    "classmap": [
+      "src/Resources/contao"
     ],
-    "conflict": {
-        "contao/manager-plugin": "<2.0 || >=3.0"
-    },
-    "require": {
-        "php": "^7.4 || ^8.0",
-        "terminal42/dc_multilingual": "^4.0",
-        "guzzlehttp/guzzle": "^6.0 || ^7.0"
-    },
-    "require-dev": {
-        "roave/security-advisories": "dev-latest",
-        "contao/manager-plugin": "^2.0"
-    },
-    "extra": {
-        "contao-manager-plugin": "Guave\\DeeplBundle\\ContaoManager\\Plugin"
-    },
-    "autoload": {
-        "psr-4": {
-            "Guave\\DeeplBundle\\": "src/"
-        }
-    },
-    "minimum-stability": "stable"
+    "exclude-from-classmap": [
+      "src/Resources/contao/config",
+      "src/Resources/contao/dca",
+      "src/Resources/contao/languages",
+      "src/Resources/contao/templates"
+    ]
+  },
+  "extra": {
+    "contao-manager-plugin": "Guave\\DeeplBundle\\ContaoManager\\Plugin"
+  },
+  "minimum-stability": "stable",
+  "support": {
+    "issues": "https://github.com/guavestudios/DeeplBundle/issues",
+    "source": "https://github.com/guavestudios/DeeplBundle"
+  }
 }
