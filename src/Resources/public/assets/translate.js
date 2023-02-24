@@ -2,6 +2,7 @@
 	// setup some constants
 	const API_BASE = '/api/deepl/translate';
 	const FIELD_BUTTON_SELECTOR = '[data-translate-field]';
+	const MULTI_COLUMN_BUTTON_SELECTOR = '[data-translate-multicol]';
 	const ALL_BUTTON_SELECTOR = '[data-translate-all]';
 	const LOADER_CLASS = 'translate-loader';
 	const SHOW_LOADER_CLASS = 'show--translate-loader';
@@ -69,14 +70,21 @@
 
 			// check target selector / parents
 			let isFieldButton = target.matches(FIELD_BUTTON_SELECTOR);
+			let isMultiColumnButton = target.matches(MULTI_COLUMN_BUTTON_SELECTOR);
 			let isAllButton = target.matches(ALL_BUTTON_SELECTOR);
 			let closestFieldButton = target.closest(FIELD_BUTTON_SELECTOR);
+			let closestMutiColumnButton = target.closest(MULTI_COLUMN_BUTTON_SELECTOR);
 			let closestAllButton = target.closest(ALL_BUTTON_SELECTOR);
 
 			// if target is child of field button
 			if (!isFieldButton && closestFieldButton) {
 				button = closestFieldButton;
 				isFieldButton = true;
+			}
+			// if target is child of multi column button
+			else if (!isMultiColumnButton && closestMutiColumnButton) {
+				button = closestMutiColumnButton;
+				isMultiColumnButton = true;
 			}
 			// if target is child of all button
 			else if (!isAllButton && closestAllButton) {
@@ -92,16 +100,44 @@
 				translateFields([fieldName], targetLang);
 			}
 
+			if (isMultiColumnButton) {
+				e.preventDefault();
+				const fieldNames = getMultiColumnFields(button);
+				const targetLang = button.dataset.translateTargetLang;
+				translateFields(fieldNames, targetLang);
+			}
+
 			// translate all fields from all button
 			if (isAllButton) {
 				e.preventDefault();
-				const fields = Array.from(document.querySelectorAll('[data-translate-field]'));
-				const fieldNames = fields.map(field => field.dataset.translateField);
+				const fields = Array.from(document.querySelectorAll(FIELD_BUTTON_SELECTOR));
+				const multiColumns = Array.from(document.querySelectorAll(MULTI_COLUMN_BUTTON_SELECTOR));
+				const fieldNames = [
+					...fields.map(field => field.dataset.translateField),
+					...multiColumns.reduce((fields, button) => {
+						return [
+							...fields,
+							...getMultiColumnFields(button),
+						];
+					}, [])
+				];
 				const targetLang = button.dataset.translateTargetLang;
 				translateFields(fieldNames, targetLang);
 			}
 		});
 	});
+
+	function getMultiColumnFields(button) {
+		const multiColumnName = button.dataset.translateMulticol;
+		const widget = button.closest('.widget');
+		const rowIds = Array.from(widget.querySelectorAll('table tbody tr')).map(row => row.dataset.rowid);
+		const fieldNames = button.dataset.translateFields.split(/,\s?/).map(name => {
+			return rowIds.map(row => {
+				return `${multiColumnName}[${row}][${name}]`
+			})
+		}).flat();
+		return fieldNames;
+	}
 
 	async function translateFields(fieldNames = [], targetLang = sourceLang) {
 		// get fields

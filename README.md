@@ -38,6 +38,11 @@ guave_deepl:
       fields:
         - title
         - text
+      multiColumnFields:
+        category_grid:
+          fields:
+            - title
+            - text
 ```
 
 ## Register Custom ActiveLanguageResolver

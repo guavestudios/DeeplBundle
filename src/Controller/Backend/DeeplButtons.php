@@ -48,6 +48,10 @@ class DeeplButtons extends Backend
             $GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['xlabel'][] = [self::class, 'translateButton'];
         }
 
+        foreach ($this->tables[$dc->table]['multiColumnFields'] as $field => $fields) {
+            $GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['xlabel'][] = [self::class, 'translateMultiColumnButton'];
+        }
+
         $GLOBALS['TL_DCA'][$dc->table]['edit']['buttons_callback'][] = [self::class, 'addTranslateAllButton'];
     }
 
@@ -56,10 +60,17 @@ class DeeplButtons extends Backend
         $field = $dc->field;
         // inputUnit
         if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['inputType'] === 'inputUnit') {
-            $field.='[value]';
+            $field .= '[value]';
         }
-        
+
         return $this->getTranslateButton($field);
+    }
+
+    public function translateMultiColumnButton(DataContainer $dc)
+    {
+        $field = $dc->field;
+
+        return $this->getMulticolumnTranslateButton($field, $this->tables[$dc->table]['multiColumnFields'][$field]['fields']);
     }
 
     public function addTranslateAllButton($arrButtons)
@@ -83,6 +94,22 @@ class DeeplButtons extends Backend
         return sprintf(
             '<span data-translate-field="%s" data-translate-target-lang="%s">%s</span>',
             $field,
+            $this->activeLang,
+            sprintf(
+                $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
+                $this->defaultLanguage,
+                $this->activeLang,
+                Image::getHtml('pasteinto.svg')
+            )
+        );
+    }
+
+    public function getMulticolumnTranslateButton(string $field, array $fields): string
+    {
+        return sprintf(
+            '<span data-translate-multicol="%s" data-translate-fields="%s" data-translate-target-lang="%s">%s</span>',
+            $field,
+            implode(',', $fields),
             $this->activeLang,
             sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
