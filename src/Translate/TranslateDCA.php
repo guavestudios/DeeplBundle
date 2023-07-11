@@ -81,7 +81,6 @@ class TranslateDCA
     public function translate(?string $value, string $fromLang, string $toLang): ?string
     {
         if (!empty($value)) {
-            return $value . '.Translate';
             $translateResponse = $this->deeplApi->translate($value, $fromLang, $toLang);
             if (isset($translateResponse['translations'][0]['text'])) {
                 $value = $translateResponse['translations'][0]['text'];
