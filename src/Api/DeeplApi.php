@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Guave\DeeplBundle\Api;
 
+use Guave\DeeplBundle\Config\Config;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -14,10 +15,10 @@ class DeeplApi
 {
     protected string $apiKey;
 
-    public function __construct(string $deeplApiKey, bool $freeApi = false)
+    public function __construct(string $deeplApiKey, Config $config)
     {
         $url = 'https://api.deepl.com';
-        if ($freeApi) {
+        if ($config->isFreeApi()) {
             $url = 'https://api-free.deepl.com';
         }
 

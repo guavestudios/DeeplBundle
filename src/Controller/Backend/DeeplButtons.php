@@ -8,23 +8,21 @@ use Contao\Backend;
 use Contao\Controller;
 use Contao\DataContainer;
 use Contao\Image;
+use Guave\DeeplBundle\Config\Config;
 use Guave\DeeplBundle\Resolver\ActiveLanguageResolverInterface;
 
 class DeeplButtons extends Backend
 {
-    protected string $defaultLanguage;
-
-    protected array $tables;
+    protected iterable $activeLanguageResolver;
 
     protected string $activeLang;
 
-    protected iterable $activeLanguageResolver;
+    protected Config $config;
 
-    public function __construct(string $defaultLanguage, array $tables, iterable $activeLanguageResolver)
+    public function __construct(Config $config, iterable $activeLanguageResolver)
     {
-        $this->defaultLanguage = $defaultLanguage;
-        $this->tables = $tables;
         $this->activeLanguageResolver = $activeLanguageResolver;
+        $this->config = $config;
 
         parent::__construct();
     }
@@ -36,7 +34,7 @@ class DeeplButtons extends Backend
         }
 
         $activeLang = $this->getActiveLang($dc);
-        if ($activeLang === $this->defaultLanguage) {
+        if ($activeLang === $this->config->getDefaultLanguage()) {
             return;
         }
 
@@ -44,11 +42,11 @@ class DeeplButtons extends Backend
 
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/guavedeepl/assets/translate.js';
 
-        foreach ($this->tables[$dc->table]['fields'] as $field) {
+        foreach ($this->config->getTables()[$dc->table]['fields'] as $field) {
             $GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['xlabel'][] = [self::class, 'translateButton'];
         }
 
-        foreach ($this->tables[$dc->table]['multiColumnFields'] as $field => $fields) {
+        foreach ($this->config->getTables()[$dc->table]['multiColumnFields'] as $field => $fields) {
             $GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['xlabel'][] = [self::class, 'translateMultiColumnButton'];
         }
 
@@ -70,7 +68,7 @@ class DeeplButtons extends Backend
     {
         $field = $dc->field;
 
-        return $this->getMulticolumnTranslateButton($field, $this->tables[$dc->table]['multiColumnFields'][$field]['fields']);
+        return $this->getMulticolumnTranslateButton($field, $this->config->getTables()[$dc->table]['multiColumnFields'][$field]['fields']);
     }
 
     public function addTranslateAllButton($arrButtons)
@@ -80,7 +78,7 @@ class DeeplButtons extends Backend
             $this->activeLang,
             sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translateAll'][0],
-                $this->defaultLanguage,
+                $this->config->getDefaultLanguage(),
                 $this->activeLang,
                 Image::getHtml('pasteinto.svg')
             )
@@ -97,7 +95,7 @@ class DeeplButtons extends Backend
             $this->activeLang,
             sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
-                $this->defaultLanguage,
+                $this->config->getDefaultLanguage(),
                 $this->activeLang,
                 Image::getHtml('pasteinto.svg')
             )
@@ -113,7 +111,7 @@ class DeeplButtons extends Backend
             $this->activeLang,
             sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
-                $this->defaultLanguage,
+                $this->config->getDefaultLanguage(),
                 $this->activeLang,
                 Image::getHtml('pasteinto.svg')
             )
@@ -134,7 +132,7 @@ class DeeplButtons extends Backend
         }
 
         if (!$language) {
-            $language = $this->defaultLanguage;
+            $language = $this->config->getDefaultLanguage();
         }
 
         $this->activeLang = $language;

@@ -8,6 +8,7 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\Model;
 use DC_Multilingual;
+use Guave\DeeplBundle\Config\Config;
 use Guave\DeeplBundle\Model\MultilingualModel;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -18,13 +19,13 @@ class LoadFallbackTranslationsListener
 {
     protected SessionInterface $session;
 
-    protected string $defaultLanguage;
+    protected Config $config;
 
     public function __construct(
-        string $defaultLanguage,
+        Config $config,
         SessionInterface $session
     ) {
-        $this->defaultLanguage = $defaultLanguage;
+        $this->config = $config;
         $this->session = $session;
     }
 
@@ -40,7 +41,7 @@ class LoadFallbackTranslationsListener
 
         $id = (int) $dc->id;
         $activeLang = $this->getActiveLang($dc->table, $id);
-        if ($activeLang === $this->defaultLanguage) {
+        if ($activeLang === $this->config->getDefaultLanguage()) {
             return;
         }
 
@@ -87,7 +88,7 @@ class LoadFallbackTranslationsListener
         $sessionKey = 'dc_multilingual:' . $table . ':' . $id;
 
 
-        return $objSessionBag->get($sessionKey) ?? $this->defaultLanguage;
+        return $objSessionBag->get($sessionKey) ?? $this->config->getDefaultLanguage();
     }
 
     protected function getModel(string $table, int $id): ?Model

@@ -6,6 +6,7 @@ namespace Guave\DeeplBundle\EventListener;
 
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Input;
+use Guave\DeeplBundle\Config\Config;
 use Guave\DeeplBundle\Controller\Backend\DeeplButtons;
 
 /**
@@ -13,18 +14,16 @@ use Guave\DeeplBundle\Controller\Backend\DeeplButtons;
  */
 class LoadDataContainerListener
 {
-    protected bool $enabled = false;
-    protected array $tables;
+    protected Config $config;
 
-    public function __construct(bool $enabled, array $tables)
+    public function __construct(Config $config)
     {
-        $this->enabled = $enabled;
-        $this->tables = $tables;
+        $this->config = $config;
     }
 
     public function __invoke(string $table): void
     {
-        if (!$this->enabled) {
+        if (!$this->config->isEnabled()) {
             return;
         }
 
@@ -52,7 +51,7 @@ class LoadDataContainerListener
             return;
         }
 
-        if (array_key_exists($table, $this->tables)) {
+        if (array_key_exists($table, $this->config->getTables())) {
             $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [DeeplButtons::class, 'registerDeepl'];
 
             // register fallback translation

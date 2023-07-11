@@ -27,3 +27,9 @@ services:
         public: true
         tags:
             - { name: 'deepl.resolver', priority: 19 }
+
+    Guave\DeeplBundle\Config\Config:
+        public: true
+
+    Guave\DeeplBundle\Translate\TranslateDCA:
+        public: true
