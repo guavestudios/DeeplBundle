@@ -142,13 +142,15 @@
 	async function translateFields(fieldNames = [], targetLang = sourceLang) {
 		// get fields
 		const fields = fieldNames.reduce((arr, name) => {
-			const field = document.querySelector(`[name="${name}"]`);
-			if (field) {
-				arr.push(field);
+			const element = document.querySelector(`[name="${name}"]`);
+			if (element) {
+				arr.push({
+					name,
+					element,
+				});
 			}
 			return arr;
 		}, []);
-
 
 		if (fields.length) {
 			// dynamically ask for the source language, with default of de
@@ -160,13 +162,13 @@
 
 			// prepare data
 			const data = {
-				texts: fields.map(field => {
+				texts: fields.reduce((texts, field) => {
 					// get the value from the html form input
-					let value = field.value;
+					let value = field.element.value;
 
 					if (window.tinyMCE) {
 						// get tinyMCE instance
-						const wysiwyg = tinyMCE.get(field.id);
+						const wysiwyg = tinyMCE.get(field.element.id);
 
 						if (wysiwyg) {
 							// get content from tinyMCE instance
@@ -174,11 +176,17 @@
 						}
 					}
 
-					return value;
-				}),
+					// if value is not empty, add value with field name as key
+					if (value) {
+						texts[field.name] = value;
+					}
+
+					return texts;
+				}, {}),
 				sourceLang,
 				targetLang
 			}
+
 
 			// send get request
 			const response = await fetch(`${API_BASE}?${urlParams(data)}`);
@@ -186,18 +194,24 @@
 
 			if (results.translations) {
 				// loop through translations
-				results.translations.forEach((t, i) => {
-					// assign translation to field
-					fields[i].value = t.translation;
+				Object.entries(results.translations).forEach(([key, value]) => {
+					// find field in fields array
+					const field = fields.find(field => field.name === key)
 
-					// check if tinyMCE exists
-					if (window.tinyMCE) {
-						// get tinyMCE instance
-						const wysiwyg = tinyMCE.get(fields[i].id);
+					// check if field exists
+					if (field) {
+						// assign translation to field
+						field.element.value = value.translation;
 
-						if (wysiwyg) {
-							// set content for tinyMCE instance
-							wysiwyg.setContent(t.translation);
+						// check if tinyMCE exists
+						if (window.tinyMCE) {
+							// get tinyMCE instance
+							const wysiwyg = tinyMCE.get(field.element.id);
+
+							if (wysiwyg) {
+								// set content for tinyMCE instance
+								wysiwyg.setContent(value.translation);
+							}
 						}
 					}
 				});

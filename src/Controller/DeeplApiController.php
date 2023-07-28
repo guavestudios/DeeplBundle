@@ -42,9 +42,9 @@ class DeeplApiController extends AbstractController
         $translatedTexts = [];
 
         try {
-            foreach ($texts as $text) {
+            foreach ($texts as $k => $text) {
                 $response = $this->deeplApi->translate($text, $sourceLang, $targetLang);
-                $translatedTexts[] = [
+                $translatedTexts[$k] = [
                     'source' => $text,
                     'translation' => $response['translations'][0]['text'],
                 ];
