@@ -29,13 +29,13 @@ class ActiveLanguageByPageOrArticleOrArticleContentResolver implements ActiveLan
 
         if ($dataContainer->table === ContentModel::getTable() && $dataContainer->parentTable === ArticleModel::getTable()) {
             $content = ContentModel::findOneBy('id', $dataContainer->id);
-            $language = $this->getRootLanguageFromArticle((int) $content->pid);
+            $language = $this->getRootLanguageFromArticle((int)$content->pid);
         } elseif ($dataContainer->table === ArticleModel::getTable()) {
             $article = ArticleModel::findOneBy('id', $dataContainer->id);
-            $language = $this->getRootLanguageFromPage((int) $article->pid);
+            $language = $this->getRootLanguageFromPage((int)$article->pid);
         } elseif ($dataContainer->table === PageModel::getTable()) {
             $page = PageModel::findOneBy('id', $dataContainer->id);
-            $language = $this->getRootLanguageFromPage((int) $page->id);
+            $language = $this->getRootLanguageFromPage((int)$page->id);
         }
 
         return $language;
@@ -48,7 +48,7 @@ class ActiveLanguageByPageOrArticleOrArticleContentResolver implements ActiveLan
             throw new NotFoundHttpException(sprintf('page with id %s not found', $id));
         }
 
-        return $this->getRootLanguageFromPage((int) $article->pid);
+        return $this->getRootLanguageFromPage((int)$article->pid);
     }
 
     protected function getRootLanguageFromPage(int $id): string
