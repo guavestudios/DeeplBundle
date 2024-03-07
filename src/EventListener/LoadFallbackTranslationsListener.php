@@ -10,23 +10,23 @@ use Contao\Model;
 use DC_Multilingual;
 use Guave\DeeplBundle\Config\Config;
 use Guave\DeeplBundle\Model\MultilingualModel;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * loads fallback translations of translate fields with data container Multilingual
  */
 class LoadFallbackTranslationsListener
 {
-    protected SessionInterface $session;
-
     protected Config $config;
+    protected RequestStack $requestStack;
 
     public function __construct(
-        Config $config,
-        SessionInterface $session
-    ) {
+        Config       $config,
+        RequestStack $requestStack
+    )
+    {
         $this->config = $config;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function loadFallbackTranslation(DataContainer $dc)
@@ -39,7 +39,7 @@ class LoadFallbackTranslationsListener
             return;
         }
 
-        $id = (int) $dc->id;
+        $id = (int)$dc->id;
         $activeLang = $this->getActiveLang($dc->table, $id);
         if ($activeLang === $this->config->getDefaultLanguage()) {
             return;
@@ -77,25 +77,16 @@ class LoadFallbackTranslationsListener
             if ($mode === 'insert') {
                 Database::getInstance()->prepare('INSERT INTO ' . $dc->table . ' %s')->set($params)->execute();
             } else {
-                Database::getInstance()->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ? LIMIT 1')->set($params)->execute((int) $activeLangModel->id);
+                Database::getInstance()->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ? LIMIT 1')->set($params)->execute((int)$activeLangModel->id);
             }
         }
     }
 
     protected function getActiveLang(string $table, int $id): string
     {
-        $objSessionBag = $this->session->getBag('contao_backend');
+        $objSessionBag = $this->requestStack->getSession()->getBag('contao_backend');
         $sessionKey = 'dc_multilingual:' . $table . ':' . $id;
 
-
         return $objSessionBag->get($sessionKey) ?? $this->config->getDefaultLanguage();
-    }
-
-    protected function getModel(string $table, int $id): ?Model
-    {
-        /** @var Model $class */
-        $class = Model::getClassFromTable($table);
-
-        return $class::findByPk($id);
     }
 }
