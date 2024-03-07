@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Guave\DeeplBundle\Controller;
 
+use Exception;
 use Guave\DeeplBundle\Api\DeeplApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,7 +60,7 @@ class DeeplApiController extends AbstractController
                     'translation' => $response['translations'][0]['text'],
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendError($e->getMessage());
         }
 

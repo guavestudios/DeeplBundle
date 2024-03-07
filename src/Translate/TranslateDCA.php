@@ -10,6 +10,7 @@ use Contao\Database;
 use Contao\Model;
 use Contao\PageModel;
 use Contao\System;
+use Exception;
 use Guave\DeeplBundle\Api\DeeplApi;
 use Guave\DeeplBundle\Config\Config;
 use Terminal42\DcMultilingualBundle\Model\Multilingual;
@@ -21,9 +22,10 @@ class TranslateDCA
     protected DeeplApi $deeplApi;
 
     public function __construct(
-        Config $config,
+        Config   $config,
         DeeplApi $deeplApi
-    ) {
+    )
+    {
         $this->deeplApi = $deeplApi;
         $this->config = $config;
     }
@@ -99,9 +101,9 @@ class TranslateDCA
                 $stmt = Database::getInstance()->prepare('INSERT INTO ' . $model::getTable() . ' %s')->set($params)->execute();
                 $model->id = $stmt->insertId;
             } else {
-                Database::getInstance()->prepare('UPDATE ' . $model::getTable() . ' %s WHERE id = ? LIMIT 1')->set($params)->execute((int) $model->id);
+                Database::getInstance()->prepare('UPDATE ' . $model::getTable() . ' %s WHERE id = ? LIMIT 1')->set($params)->execute((int)$model->id);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dump(debug_backtrace()[0]['class'] . ':' . debug_backtrace()[0]['function']);
             dump(debug_backtrace()[1]['class'] . ':' . debug_backtrace()[1]['function']);
             dump(debug_backtrace()[2]['class'] . ':' . debug_backtrace()[2]['function']);
@@ -152,7 +154,7 @@ class TranslateDCA
 
         [$insertTag, $pageString] = explode('::', $value, 2);
         [$pageId, $filter] = explode('|', $pageString ?? '', 2);
-        $pageId = $this->getTranslatePage((int) $pageId, $toLang);
+        $pageId = $this->getTranslatePage((int)$pageId, $toLang);
 
         return sprintf('{{%s::%s|%s}}', $insertTag, $pageId, $filter);
     }
@@ -163,7 +165,7 @@ class TranslateDCA
             return $value;
         }
 
-        $languageMain = (int) $value;
+        $languageMain = (int)$value;
         // read alle pages with same main language
         $pages = PageModel::findAll(['column' => ['languageMain=?'], 'value' => [$languageMain]]);
         if ($pages) {
@@ -171,7 +173,7 @@ class TranslateDCA
                 $page->loadDetails();
                 // take first matching toLang
                 if ($page->rootLanguage === $toLang) {
-                    $value = (int) $page->id;
+                    $value = (int)$page->id;
                     break;
                 }
             }
