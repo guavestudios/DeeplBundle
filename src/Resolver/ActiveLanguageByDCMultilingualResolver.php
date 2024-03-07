@@ -3,29 +3,26 @@
 namespace Guave\DeeplBundle\Resolver;
 
 use Contao\DataContainer;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use DC_Multilingual;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ActiveLanguageByDCMultilingualResolver implements ActiveLanguageResolverInterface
 {
-    protected SessionInterface $session;
+    protected RequestStack $requestStack;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function supports(DataContainer $dataContainer): bool
     {
-        if ($dataContainer instanceof \DC_Multilingual) {
-            return true;
-        }
-
-        return false;
+        return $dataContainer instanceof DC_Multilingual;
     }
 
     public function resolve(DataContainer $dataContainer): ?string
     {
-        $objSessionBag = $this->session->getBag('contao_backend');
+        $objSessionBag = $this->requestStack->getSession()->getBag('contao_backend');
         $sessionKey = 'dc_multilingual:' . $dataContainer->table . ':' . $dataContainer->id;
         if ($objSessionBag->get($sessionKey)) {
             return $objSessionBag->get($sessionKey);
