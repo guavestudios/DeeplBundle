@@ -7,14 +7,11 @@ namespace Guave\DeeplBundle\EventListener;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Model;
-use DC_Multilingual;
 use Guave\DeeplBundle\Config\Config;
 use Guave\DeeplBundle\Model\MultilingualModel;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Terminal42\DcMultilingualBundle\Driver as Multilingual;
 
-/**
- * loads fallback translations of translate fields with data container Multilingual
- */
 class LoadFallbackTranslationsListener
 {
     protected Config $config;
@@ -35,7 +32,7 @@ class LoadFallbackTranslationsListener
             return;
         }
 
-        if (!$dc instanceof DC_Multilingual) {
+        if (!$dc instanceof Multilingual) {
             return;
         }
 

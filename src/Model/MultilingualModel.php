@@ -9,10 +9,6 @@ use Terminal42\DcMultilingualBundle\Model\Multilingual;
 
 class MultilingualModel extends Multilingual
 {
-    /**
-     * Table name
-     * @var string
-     */
     protected static $strTable;
 
     public function __construct(string $table, $objResult = null)

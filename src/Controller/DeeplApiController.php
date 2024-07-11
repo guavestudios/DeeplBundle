@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class DeeplApiController extends AbstractController
 {
@@ -21,9 +21,7 @@ class DeeplApiController extends AbstractController
         $this->deeplApi = $deeplApi;
     }
 
-    /**
-     * @Route("/api/deepl/translate", name="api_deepl_translate")
-     */
+    #[Route('/api/deepl/translate', name: 'api_deepl_translate')]
     public function translate(Request $request): Response
     {
         $texts = $request->get('texts');
