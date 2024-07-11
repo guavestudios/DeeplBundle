@@ -3,8 +3,8 @@
 namespace Guave\DeeplBundle\Resolver;
 
 use Contao\DataContainer;
-use DC_Multilingual;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Terminal42\DcMultilingualBundle\Driver as Multilingual;
 
 class ActiveLanguageByDCMultilingualResolver implements ActiveLanguageResolverInterface
 {
@@ -17,7 +17,7 @@ class ActiveLanguageByDCMultilingualResolver implements ActiveLanguageResolverIn
 
     public function supports(DataContainer $dataContainer): bool
     {
-        return $dataContainer instanceof DC_Multilingual;
+        return $dataContainer instanceof Multilingual;
     }
 
     public function resolve(DataContainer $dataContainer): ?string

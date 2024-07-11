@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Guave\DeeplBundle\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Input;
 use Guave\DeeplBundle\Config\Config;
 use Guave\DeeplBundle\Controller\Backend\DeeplButtons;
+use Terminal42\DcMultilingualBundle\Driver as Multilingual;
 
-/**
- * @Hook("loadDataContainer")
- */
+#[AsHook('loadDataContainer')]
 class LoadDataContainerListener
 {
     protected Config $config;
@@ -55,7 +54,7 @@ class LoadDataContainerListener
             $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [DeeplButtons::class, 'registerDeepl'];
 
             // register fallback translation
-            if ($GLOBALS['TL_DCA'][$table]['config']['dataContainer'] === 'Multilingual') {
+            if ($GLOBALS['TL_DCA'][$table]['config']['dataContainer'] === Multilingual::class) {
                 $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [LoadFallbackTranslationsListener::class, 'loadFallbackTranslation'];
             }
         }
