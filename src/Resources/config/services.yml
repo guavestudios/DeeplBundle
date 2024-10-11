@@ -28,8 +28,24 @@ services:
         tags:
             - { name: 'deepl.resolver', priority: 19 }
 
+    Guave\DeeplBundle\Resolver\ActiveLanguageByNewsContentLanguageResolver:
+        public: true
+        tags:
+            - { name: 'deepl.resolver', priority: 18 }
+
+    Guave\DeeplBundle\Resolver\ActiveLanguageByNewsLanguageResolver:
+        public: true
+        tags:
+            - { name: 'deepl.resolver', priority: 17 }
+
+    Guave\DeeplBundle\Resolver\ActiveLanguageByNewsArchiveLanguageResolver:
+        public: true
+        tags:
+            - { name: 'deepl.resolver', priority: 16 }
+
     Guave\DeeplBundle\Config\Config:
         public: true
 
     Guave\DeeplBundle\Translate\TranslateDCA:
         public: true
+
