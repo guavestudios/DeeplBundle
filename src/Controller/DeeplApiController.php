@@ -41,6 +41,16 @@ class DeeplApiController extends AbstractController
 
         $translatedTexts = [];
 
+        // fix keys with uncompleted array
+        foreach ($texts as $k => $text) {
+            if (str_contains($k, '[')) {
+                if (!str_ends_with($k, ']')) {
+                    unset($texts[$k]);
+                    $texts[$k . ']'] = $text;
+                }
+            }
+        }
+
         try {
             foreach ($texts as $k => $text) {
                 $response = $this->deeplApi->translate($text, $sourceLang, $targetLang);
