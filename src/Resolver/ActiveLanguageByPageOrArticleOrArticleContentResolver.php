@@ -14,13 +14,9 @@ class ActiveLanguageByPageOrArticleOrArticleContentResolver implements ActiveLan
 {
     public function supports(DataContainer $dataContainer): bool
     {
-        if (($dataContainer->table === ContentModel::getTable()
+        return ($dataContainer->table === ContentModel::getTable()
                 && $dataContainer->parentTable === ArticleModel::getTable())
-            || in_array($dataContainer->table, [ArticleModel::getTable(), PageModel::getTable()], true)) {
-            return true;
-        }
-
-        return false;
+            || in_array($dataContainer->table, [ArticleModel::getTable(), PageModel::getTable()], true);
     }
 
     public function resolve(DataContainer $dataContainer): ?string
