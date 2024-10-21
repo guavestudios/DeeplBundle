@@ -1,46 +1,76 @@
 {
   "name": "guave/deepl-bundle",
   "description": "Adds support for deepl.com translation to contao dca input fields",
+  "license": "ISC",
   "type": "contao-bundle",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Gebhard Nigsch",
-      "homepage": "https://github.com/guavestudios"
-    }
-  ],
+  "homepage": "https://www.guaveinteractive.ch",
+  "support": {
+    "issues": "https://github.com/guavestudios/deeplbundle/issues",
+    "source": "https://github.com/guavestudios/deeplbundle"
+  },
   "require": {
     "php": "^8.1",
     "contao/core-bundle": "^4.13 || ^5.0",
+    "guzzlehttp/guzzle": "^6.0 || ^7.0",
     "symfony/config": "^5.4 || ^6.4",
     "symfony/dependency-injection": "^5.4 || ^6.4",
     "symfony/http-kernel": "^5.4 || ^6.4",
-    "terminal42/dc_multilingual": "^4.0",
-    "guzzlehttp/guzzle": "^6.0 || ^7.0"
+    "terminal42/contao-changelanguage": "^3.0",
+    "terminal42/dc_multilingual": "^4.0"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-latest"
+    "bamarni/composer-bin-plugin": "^1.5",
+    "contao/manager-plugin": "^2.0",
+    "phpunit/phpunit": "^9.5",
+    "roave/security-advisories": "dev-latest",
+    "symfony/phpunit-bridge": "^6.1"
+  },
+  "conflict": {
+    "contao/manager-plugin": "<2.0 || >=3.0"
   },
   "autoload": {
     "psr-4": {
       "Guave\\DeeplBundle\\": "src/"
     },
     "classmap": [
-      "src/Resources/contao"
+      "contao/"
     ],
     "exclude-from-classmap": [
-      "src/Resources/contao/config",
-      "src/Resources/contao/dca",
-      "src/Resources/contao/languages",
-      "src/Resources/contao/templates"
+      "contao/config/",
+      "contao/dca/",
+      "contao/languages/",
+      "contao/templates/"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Guave\\DeeplBundle\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "bamarni/composer-bin-plugin": true,
+      "contao-components/installer": true,
+      "contao/manager-plugin": true,
+      "php-http/discovery": false
+    }
+  },
   "extra": {
+    "bamarni-bin": {
+      "bin-links": false,
+      "forward-command": true,
+      "target-directory": "tools"
+    },
     "contao-manager-plugin": "Guave\\DeeplBundle\\ContaoManager\\Plugin"
   },
-  "minimum-stability": "stable",
-  "support": {
-    "issues": "https://github.com/guavestudios/DeeplBundle/issues",
-    "source": "https://github.com/guavestudios/DeeplBundle"
+  "scripts": {
+    "all": [
+      "@unit-tests",
+      "@ecs",
+      "@phpstan"
+    ],
+    "ecs": "@php tools/ecs/vendor/bin/ecs check src tests --config ecs.php --fix --ansi",
+    "phpstan": "@php tools/phpstan/vendor/bin/phpstan analyze --ansi",
+    "unit-tests": "@php vendor/bin/phpunit --colors=always"
   }
 }

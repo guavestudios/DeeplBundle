@@ -7,14 +7,11 @@ namespace Guave\DeeplBundle\Config;
 class Config
 {
     private bool $enabled = false;
-
     private bool $freeApi = false;
-
     private string $defaultLanguage = 'de';
-
     private array $tables = [];
 
-    public function __construct(array $config)
+    public function __construct(array $config = ['defaultLanguage' => 'de'])
     {
         if (isset($config['enabled'])) {
             $this->setEnabled($config['enabled']);

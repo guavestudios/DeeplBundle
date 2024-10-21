@@ -26,7 +26,7 @@ class LoadFallbackTranslationsListener
         $this->requestStack = $requestStack;
     }
 
-    public function loadFallbackTranslation(DataContainer $dc)
+    public function loadFallbackTranslation(DataContainer $dc): void
     {
         if (!$dc->id) {
             return;
