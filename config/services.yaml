@@ -1,20 +1,20 @@
 services:
-    _defaults:
-        autoconfigure: true
-        autowire: true
-        bind:
-            $deeplApiKey: '%env(DEEPL_API_KEY)%'
-            $activeLanguageResolver: !tagged_iterator deepl.resolver
+  _defaults:
+    autoconfigure: true
+    autowire: true
+    bind:
+      $deeplApiKey: '%env(DEEPL_API_KEY)%'
+      $activeLanguageResolver: !tagged_iterator deepl.resolver
 
-    Guave\DeeplBundle\:
-        resource: ../src
-        exclude: ../src/{ContaoManager,DependencyInjection}
+  Guave\DeeplBundle\:
+    resource: ../src
+    exclude: ../src/{ContaoManager,DependencyInjection}
 
-    Guave\DeeplBundle\EventListener\:
-        resource: ../src/EventListener
-        public: true
+  Guave\DeeplBundle\Controller\:
+    resource: ../src/Controller
+    public: true
 
-    Guave\DeeplBundle\Resolver\:
-        resource: ../src/Resolver
-        tags:
-            - { name: 'deepl.resolver', priority: 20 }
+  Guave\DeeplBundle\Resolver\:
+    resource: ../src/Resolver
+    tags:
+      - { name: 'deepl.resolver', priority: 20 }

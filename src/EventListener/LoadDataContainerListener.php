@@ -55,7 +55,10 @@ class LoadDataContainerListener
 
             // register fallback translation
             if ($GLOBALS['TL_DCA'][$table]['config']['dataContainer'] === Multilingual::class) {
-                $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [LoadFallbackTranslationsListener::class, 'loadFallbackTranslation'];
+                $GLOBALS['TL_DCA'][$table]['config']['onload_callback'][] = [
+                    LoadFallbackTranslationsListener::class,
+                    'loadFallbackTranslation'
+                ];
             }
         }
     }

@@ -223,13 +223,12 @@
 		if (obj instanceof FormData) {
 			const temp = {};
 
-			obj.forEach(function(value, key) {
+			obj.forEach(function (value, key) {
 				temp[key] = value;
 			});
 
 			obj = temp;
-		}
-		else if (!/^o/.test(typeof obj)) {
+		} else if (!/^o/.test(typeof obj)) {
 			return obj;
 		}
 

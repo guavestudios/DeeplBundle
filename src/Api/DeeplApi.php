@@ -32,7 +32,7 @@ class DeeplApi
         $this->apiKey = $deeplApiKey;
     }
 
-    public function translate(string $text, string $sourceLang, string $targetLang)
+    public function translate(string $text, string $sourceLang, string $targetLang): array
     {
         $sourceLang = str_replace('_', '-', strtoupper($sourceLang));
         $targetLang = str_replace('_', '-', strtoupper($targetLang));
