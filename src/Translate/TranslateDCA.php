@@ -18,13 +18,9 @@ use Terminal42\DcMultilingualBundle\Model\Multilingual;
 class TranslateDCA
 {
     protected Config $config;
-
     protected DeeplApi $deeplApi;
 
-    public function __construct(
-        Config   $config,
-        DeeplApi $deeplApi
-    )
+    public function __construct(Config $config, DeeplApi $deeplApi)
     {
         $this->deeplApi = $deeplApi;
         $this->config = $config;
@@ -46,10 +42,8 @@ class TranslateDCA
                                     $value['value'] = $this->translate($value['value'], $fromLang, $toLang);
                                 }
                                 $value = serialize($value);
-                            } else {
-                                if ($GLOBALS['TL_DCA'][$model::getTable()]['fields'][$field]['inputType'] !== 'pageTree') { // do not translate pageTree
-                                    $value = $this->translate($model->$field, $fromLang, $toLang);
-                                }
+                            } elseif ($GLOBALS['TL_DCA'][$model::getTable()]['fields'][$field]['inputType'] !== 'pageTree') { // do not translate pageTree
+                                $value = $this->translate($model->$field, $fromLang, $toLang);
                             }
                             $model->$field = $value;
 
@@ -98,10 +92,14 @@ class TranslateDCA
 
         try {
             if ($model->id === null) {
-                $stmt = Database::getInstance()->prepare('INSERT INTO ' . $model::getTable() . ' %s')->set($params)->execute();
+                $stmt = Database::getInstance()->prepare('INSERT INTO ' . $model::getTable() . ' %s')
+                    ->set($params)
+                    ->execute();
                 $model->id = $stmt->insertId;
             } else {
-                Database::getInstance()->prepare('UPDATE ' . $model::getTable() . ' %s WHERE id = ? LIMIT 1')->set($params)->execute((int)$model->id);
+                Database::getInstance()->prepare('UPDATE ' . $model::getTable() . ' %s WHERE id = ? LIMIT 1')
+                    ->set($params)
+                    ->execute((int)$model->id);
             }
         } catch (Exception $e) {
             dump(debug_backtrace()[0]['class'] . ':' . debug_backtrace()[0]['function']);

@@ -14,9 +14,7 @@ use Guave\DeeplBundle\Resolver\ActiveLanguageResolverInterface;
 class DeeplButtons extends Backend
 {
     protected iterable $activeLanguageResolver;
-
     protected string $activeLang;
-
     protected Config $config;
 
     public function __construct(Config $config, iterable $activeLanguageResolver)
@@ -27,7 +25,7 @@ class DeeplButtons extends Backend
         parent::__construct();
     }
 
-    public function registerDeepl(DataContainer $dc)
+    public function registerDeepl(DataContainer $dc): void
     {
         if (!$dc->id) {
             return;
@@ -53,7 +51,7 @@ class DeeplButtons extends Backend
         $GLOBALS['TL_DCA'][$dc->table]['edit']['buttons_callback'][] = [self::class, 'addTranslateAllButton'];
     }
 
-    public function translateButton(DataContainer $dc)
+    public function translateButton(DataContainer $dc): string
     {
         $field = $dc->field;
         // inputUnit
@@ -64,14 +62,17 @@ class DeeplButtons extends Backend
         return $this->getTranslateButton($field);
     }
 
-    public function translateMultiColumnButton(DataContainer $dc)
+    public function translateMultiColumnButton(DataContainer $dc): string
     {
         $field = $dc->field;
 
-        return $this->getMulticolumnTranslateButton($field, $this->config->getTables()[$dc->table]['multiColumnFields'][$field]['fields']);
+        return $this->getMulticolumnTranslateButton(
+            $field,
+            $this->config->getTables()[$dc->table]['multiColumnFields'][$field]['fields']
+        );
     }
 
-    public function addTranslateAllButton($arrButtons)
+    public function addTranslateAllButton(array $arrButtons): array
     {
         $arrButtons['translateAll'] = sprintf(
             '<button type="button" data-translate-all data-translate-source-lang="%s" data-translate-target-lang="%s" class="tl_submit" accesskey="a">%s</button>',

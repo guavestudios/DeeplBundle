@@ -12,18 +12,11 @@ Controller::loadLanguageFile($table);
 PaletteManipulator::create()
     ->addField('language', 'title_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('langPid', 'title_legend', PaletteManipulator::POSITION_APPEND)
-    ->applyToPalette('default', 'tl_news_archive')
-;
+    ->applyToPalette('default', 'tl_news_archive');
 
-/**
- * LIST
- */
 $GLOBALS['TL_DCA'][$table]['list']['label']['fields'] = ['title', 'language'];
 $GLOBALS['TL_DCA'][$table]['list']['label']['format'] = '%s <span style="color:#999;">(%s)</span>';
 
-/**
- * FIELDS
- */
 $GLOBALS['TL_DCA'][$table]['fields']['language'] = [
     'label' => &$GLOBALS['TL_LANG'][$table]['language'],
     'exclude' => true,

@@ -42,11 +42,9 @@ class DeeplApiController extends AbstractController
 
         // fix keys with uncompleted array
         foreach ($texts as $k => $text) {
-            if (str_contains($k, '[')) {
-                if (!str_ends_with($k, ']')) {
-                    unset($texts[$k]);
-                    $texts[$k . ']'] = $text;
-                }
+            if (str_contains($k, '[') && !str_ends_with($k, ']')) {
+                unset($texts[$k]);
+                $texts[$k . ']'] = $text;
             }
         }
 

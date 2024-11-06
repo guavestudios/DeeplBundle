@@ -32,7 +32,7 @@ class DeeplApi
         $this->apiKey = $deeplApiKey;
     }
 
-    public function translate(string $text, string $sourceLang, string $targetLang)
+    public function translate(string $text, string $sourceLang, string $targetLang): array
     {
         $response = $this->client->post(
             '/v2/translate',

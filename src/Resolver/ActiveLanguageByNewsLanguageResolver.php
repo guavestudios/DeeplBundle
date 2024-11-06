@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Guave\DeeplBundle\Resolver;
 
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\NewsArchiveModel;
 use Contao\NewsModel;
 
@@ -12,19 +13,15 @@ class ActiveLanguageByNewsLanguageResolver implements ActiveLanguageResolverInte
 {
     public function supports(DataContainer $dataContainer): bool
     {
-        if ($dataContainer->table === NewsModel::getTable() && \Input::get('do') === 'news') {
-            return true;
-        }
-
-        return false;
+        return $dataContainer->table === NewsModel::getTable() && Input::get('do') === 'news';
     }
 
     public function resolve(DataContainer $dataContainer): ?string
     {
-        $news = NewsModel::findOneBy('id', (int) \Input::get('id'));
+        $news = NewsModel::findOneBy('id', (int)Input::get('id'));
 
         if ($news) {
-            $newsArchive = NewsArchiveModel::findOneBy('id', (int) $news->pid);
+            $newsArchive = NewsArchiveModel::findOneBy('id', (int)$news->pid);
 
             return $newsArchive->language ?? null;
         }

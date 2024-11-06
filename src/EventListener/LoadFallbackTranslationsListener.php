@@ -17,10 +17,7 @@ class LoadFallbackTranslationsListener
     protected Config $config;
     protected RequestStack $requestStack;
 
-    public function __construct(
-        Config       $config,
-        RequestStack $requestStack
-    )
+    public function __construct(Config $config, RequestStack $requestStack)
     {
         $this->config = $config;
         $this->requestStack = $requestStack;
@@ -74,7 +71,9 @@ class LoadFallbackTranslationsListener
             if ($mode === 'insert') {
                 Database::getInstance()->prepare('INSERT INTO ' . $dc->table . ' %s')->set($params)->execute();
             } else {
-                Database::getInstance()->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ? LIMIT 1')->set($params)->execute((int)$activeLangModel->id);
+                Database::getInstance()->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ? LIMIT 1')
+                    ->set($params)
+                    ->execute((int)$activeLangModel->id);
             }
         }
     }
@@ -85,5 +84,13 @@ class LoadFallbackTranslationsListener
         $sessionKey = 'dc_multilingual:' . $table . ':' . $id;
 
         return $objSessionBag->get($sessionKey) ?? $this->config->getDefaultLanguage();
+    }
+
+    protected function getModel(string $table, int $id): ?Model
+    {
+        /** @var Model $class */
+        $class = Model::getClassFromTable($table);
+
+        return $class::findByPk($id);
     }
 }

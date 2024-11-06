@@ -24,8 +24,7 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
                 ->setLoadAfter([
                     ContaoCoreBundle::class,
                     ContaoNewsBundle::class,
-                ])
-            ,
+                ]),
         ];
     }
 
