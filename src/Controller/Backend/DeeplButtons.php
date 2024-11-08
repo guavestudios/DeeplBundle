@@ -74,7 +74,8 @@ class DeeplButtons extends Backend
     public function addTranslateAllButton($arrButtons)
     {
         $arrButtons['translateAll'] = sprintf(
-            '<button type="button" data-translate-all data-translate-target-lang="%s" class="tl_submit" accesskey="a">%s</button>',
+            '<button type="button" data-translate-all data-translate-source-lang="%s" data-translate-target-lang="%s" class="tl_submit" accesskey="a">%s</button>',
+            $this->config->getDefaultLanguage(),
             $this->activeLang,
             sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translateAll'][0],
@@ -90,8 +91,9 @@ class DeeplButtons extends Backend
     public function getTranslateButton(string $field): string
     {
         return sprintf(
-            '<span data-translate-field="%s" data-translate-target-lang="%s">%s</span>',
+            '<span data-translate-field="%s" data-translate-source-lang="%s" data-translate-target-lang="%s">%s</span>',
             $field,
+            $this->config->getDefaultLanguage(),
             $this->activeLang,
             sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
@@ -105,9 +107,10 @@ class DeeplButtons extends Backend
     public function getMulticolumnTranslateButton(string $field, array $fields): string
     {
         return sprintf(
-            '<span data-translate-multicol="%s" data-translate-fields="%s" data-translate-target-lang="%s">%s</span>',
+            '<span data-translate-multicol="%s" data-translate-fields="%s" data-translate-source-lang="%s" data-translate-target-lang="%s">%s</span>',
             $field,
             implode(',', $fields),
+            $this->config->getDefaultLanguage(),
             $this->activeLang,
             sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],

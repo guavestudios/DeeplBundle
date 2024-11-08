@@ -7,9 +7,6 @@
 	const LOADER_CLASS = 'translate-loader';
 	const SHOW_LOADER_CLASS = 'show--translate-loader';
 
-	// assume source language is de
-	let sourceLang = 'de';
-
 	document.addEventListener('DOMContentLoaded', e => {
 		// add loader element
 		const loader = document.createElement('div');
@@ -96,15 +93,17 @@
 			if (isFieldButton) {
 				e.preventDefault();
 				const fieldName = button.dataset.translateField;
+				const sourceLang = button.dataset.translateSourceLang;
 				const targetLang = button.dataset.translateTargetLang;
-				translateFields([fieldName], targetLang);
+				translateFields([fieldName], sourceLang, targetLang);
 			}
 
 			if (isMultiColumnButton) {
 				e.preventDefault();
 				const fieldNames = getMultiColumnFields(button);
-				const targetLang = button.dataset.translateTargetLang;
-				translateFields(fieldNames, targetLang);
+                const sourceLang = button.dataset.translateSourceLang;
+                const targetLang = button.dataset.translateTargetLang;
+				translateFields(fieldNames, sourceLang, targetLang);
 			}
 
 			// translate all fields from all button
@@ -121,8 +120,9 @@
 						];
 					}, [])
 				];
-				const targetLang = button.dataset.translateTargetLang;
-				translateFields(fieldNames, targetLang);
+                const sourceLang = button.dataset.translateSourceLang;
+                const targetLang = button.dataset.translateTargetLang;
+				translateFields(fieldNames, sourceLang, targetLang);
 			}
 		});
 	});
@@ -139,7 +139,7 @@
 		return fieldNames;
 	}
 
-	async function translateFields(fieldNames = [], targetLang = sourceLang) {
+	async function translateFields(fieldNames = [], sourceLang, targetLang) {
 		// get fields
 		const fields = fieldNames.reduce((arr, name) => {
 			const element = document.querySelector(`[name="${name}"]`);
@@ -153,10 +153,6 @@
 		}, []);
 
 		if (fields.length) {
-			// dynamically ask for the source language, with default of de
-			// const lang = prompt('Übersetzen von? [de|en|fr|it]', sourceLang);
-			// sourceLang = lang || sourceLang;
-
 			// show loader
 			document.documentElement.classList.add(SHOW_LOADER_CLASS);
 
