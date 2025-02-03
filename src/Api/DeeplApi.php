@@ -34,6 +34,9 @@ class DeeplApi
 
     public function translate(string $text, string $sourceLang, string $targetLang)
     {
+        $sourceLang = str_replace('_', '-', strtoupper($sourceLang));
+        $targetLang = str_replace('_', '-', strtoupper($targetLang));
+
         $response = $this->client->post(
             '/v2/translate',
             [
