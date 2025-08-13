@@ -13,7 +13,7 @@
         <ini name="error_reporting" value="-1"/>
     </php>
     <testsuites>
-        <testsuite name="Guave Flexible Content Bundle">
+        <testsuite name="Guave Deepl Bundle">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

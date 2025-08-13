@@ -32,6 +32,7 @@ class DeeplButtons extends Backend
         }
 
         $activeLang = $this->getActiveLang($dc);
+
         if ($activeLang === $this->config->getDefaultLanguage()) {
             return;
         }
@@ -44,7 +45,7 @@ class DeeplButtons extends Backend
             $GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['xlabel'][] = [self::class, 'translateButton'];
         }
 
-        foreach ($this->config->getTables()[$dc->table]['multiColumnFields'] as $field => $fields) {
+        foreach (array_keys($this->config->getTables()[$dc->table]['multiColumnFields']) as $field) {
             $GLOBALS['TL_DCA'][$dc->table]['fields'][$field]['xlabel'][] = [self::class, 'translateMultiColumnButton'];
         }
 

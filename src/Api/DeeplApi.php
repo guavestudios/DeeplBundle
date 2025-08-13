@@ -14,10 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 class DeeplApi
 {
     protected string $apiKey;
+    private Client $client;
 
     public function __construct(string $deeplApiKey, Config $config)
     {
         $url = 'https://api.deepl.com';
+
         if ($config->isFreeApi()) {
             $url = 'https://api-free.deepl.com';
         }
@@ -32,6 +34,9 @@ class DeeplApi
         $this->apiKey = $deeplApiKey;
     }
 
+    /**
+     * @return array<array>
+     */
     public function translate(string $text, string $sourceLang, string $targetLang): array
     {
         $sourceLang = str_replace('_', '-', strtoupper($sourceLang));
@@ -56,7 +61,7 @@ class DeeplApi
             return $this->handleResponse($response);
         }
 
-        throw new RuntimeException($response->getStatusCode() . ':' . $response->getBody()->getContents());
+        throw new RuntimeException($response->getStatusCode().':'.$response->getBody()->getContents());
     }
 
     protected function handleResponse(ResponseInterface $response): array
@@ -69,8 +74,9 @@ class DeeplApi
     private static function jsonDecode(string $json, bool $assoc = false, int $depth = 512, int $options = 0)
     {
         $data = json_decode($json, $assoc, $depth, $options);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new InvalidArgumentException('json_decode error: ' . json_last_error_msg());
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new InvalidArgumentException('json_decode error: '.json_last_error_msg());
         }
 
         return $data;

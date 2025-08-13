@@ -16,17 +16,16 @@ class ActiveLanguageByNewsLanguageResolver implements ActiveLanguageResolverInte
         return $dataContainer->table === NewsModel::getTable() && Input::get('do') === 'news';
     }
 
-    public function resolve(DataContainer $dataContainer): ?string
+    public function resolve(DataContainer $dataContainer): string|null
     {
-        $news = NewsModel::findOneBy('id', (int)Input::get('id'));
+        $news = NewsModel::findOneBy('id', (int) Input::get('id'));
 
         if ($news) {
-            $newsArchive = NewsArchiveModel::findOneBy('id', (int)$news->pid);
+            $newsArchive = NewsArchiveModel::findOneBy('id', (int) $news->pid);
 
             return $newsArchive->language ?? null;
         }
 
         return null;
     }
-
 }

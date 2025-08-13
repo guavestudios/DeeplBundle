@@ -16,12 +16,15 @@ class Config
         if (isset($config['enabled'])) {
             $this->setEnabled($config['enabled']);
         }
+
         if (isset($config['freeApi'])) {
             $this->setFreeApi($config['freeApi']);
         }
+
         if (isset($config['defaultLanguage'])) {
             $this->setDefaultLanguage($config['defaultLanguage']);
         }
+
         if (isset($config['tables'])) {
             $this->setTables($config['tables']);
         }

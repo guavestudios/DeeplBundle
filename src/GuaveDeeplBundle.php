@@ -42,6 +42,7 @@ class GuaveDeeplBundle extends AbstractBundle
             ->end()
             ->end()
             ->end()
-            ->end();
+            ->end()
+        ;
     }
 }

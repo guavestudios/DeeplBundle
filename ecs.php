@@ -9,7 +9,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->sets([__DIR__ . '/tools/ecs/vendor/contao/easy-coding-standard/config/contao.php']);
+    $ecsConfig->sets([__DIR__.'/tools/ecs/vendor/contao/easy-coding-standard/config/contao.php']);
     $ecsConfig->ruleWithConfiguration(GlobalNamespaceImportFixer::class, [
         'import_classes' => true,
         'import_constants' => false,

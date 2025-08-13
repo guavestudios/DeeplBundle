@@ -10,5 +10,5 @@ interface ActiveLanguageResolverInterface
 {
     public function supports(DataContainer $dataContainer): bool;
 
-    public function resolve(DataContainer $dataContainer): ?string;
+    public function resolve(DataContainer $dataContainer): string|null;
 }

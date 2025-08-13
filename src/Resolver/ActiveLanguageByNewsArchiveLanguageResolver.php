@@ -15,11 +15,10 @@ class ActiveLanguageByNewsArchiveLanguageResolver implements ActiveLanguageResol
         return $dataContainer->table === NewsArchiveModel::getTable() && Input::get('do') === 'news' && Input::get('act') === 'edit';
     }
 
-    public function resolve(DataContainer $dataContainer): ?string
+    public function resolve(DataContainer $dataContainer): string|null
     {
-        $newsArchive = NewsArchiveModel::findOneBy('id', (int)Input::get('id'));
+        $newsArchive = NewsArchiveModel::findOneBy('id', (int) Input::get('id'));
 
         return $newsArchive->language ?? null;
     }
-
 }

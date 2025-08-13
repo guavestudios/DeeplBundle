@@ -19,9 +19,10 @@ class NewsArchiveLangPidOptionsCallbackListener
         $array = [];
 
         $archives = NewsArchiveModel::findAll();
+
         if ($archives) {
             foreach ($archives as $a) {
-                $array[$a->id] = $a->title . ' (' . $a->language . ')';
+                $array[$a->id] = $a->title.' ('.$a->language.')';
             }
         }
 

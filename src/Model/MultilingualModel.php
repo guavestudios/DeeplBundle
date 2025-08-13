@@ -30,7 +30,7 @@ class MultilingualModel extends Multilingual
 
     public function findOneByLangPidAndLanguage(int $langPid, string $language)
     {
-        $query = 'SELECT * FROM ' . static::$strTable . ' WHERE ' . static::getPidColumn() . ' = ? AND ' . static::getLangColumn() . ' = ? LIMIT 1';
+        $query = 'SELECT * FROM '.static::$strTable.' WHERE '.static::getPidColumn().' = ? AND '.static::getLangColumn().' = ? LIMIT 1';
 
         $objStatement = Database::getInstance()->prepare($query);
 
@@ -53,7 +53,7 @@ class MultilingualModel extends Multilingual
 
     public function findOneByIdAndFallbackLanguage(int $id)
     {
-        $query = 'SELECT * FROM ' . static::$strTable . ' WHERE id = ? AND ' . static::getLangColumn() . ' = ? LIMIT 1';
+        $query = 'SELECT * FROM '.static::$strTable.' WHERE id = ? AND '.static::getLangColumn().' = ? LIMIT 1';
 
         $objStatement = Database::getInstance()->prepare($query);
 
@@ -83,7 +83,7 @@ class MultilingualModel extends Multilingual
 
         array_walk(
             $languages,
-            static function (&$value) {
+            static function (&$value): void {
                 $value = str_replace('-', '_', $value);
             }
         );

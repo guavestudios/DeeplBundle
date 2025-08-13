@@ -31,9 +31,11 @@ class DeeplApiController extends AbstractController
         if (empty($texts)) {
             return $this->sendError('no texts');
         }
+
         if (empty($targetLang)) {
             return $this->sendError('no targetLang');
         }
+
         if (empty($sourceLang)) {
             return $this->sendError('no sourceLang');
         }
@@ -44,7 +46,7 @@ class DeeplApiController extends AbstractController
         foreach ($texts as $k => $text) {
             if (str_contains($k, '[') && !str_ends_with($k, ']')) {
                 unset($texts[$k]);
-                $texts[$k . ']'] = $text;
+                $texts[$k.']'] = $text;
             }
         }
 

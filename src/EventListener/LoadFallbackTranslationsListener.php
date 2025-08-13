@@ -33,8 +33,9 @@ class LoadFallbackTranslationsListener
             return;
         }
 
-        $id = (int)$dc->id;
+        $id = (int) $dc->id;
         $activeLang = $this->getActiveLang($dc->table, $id);
+
         if ($activeLang === $this->config->getDefaultLanguage()) {
             return;
         }
@@ -45,9 +46,10 @@ class LoadFallbackTranslationsListener
         $translateFields = $langModel->getFields();
 
         $activeLangModel = $langModel->findOneByLangPidAndLanguage($id, $activeLang);
-        $fallbackLangModel = $langModel->findOneByIdAndFallbackLanguage($id, "");
+        $fallbackLangModel = $langModel->findOneByIdAndFallbackLanguage($id, '');
 
         $params = [];
+
         if (!$activeLangModel) {
             $mode = 'insert';
             $activeLangModel = new $modelClass();
@@ -60,6 +62,7 @@ class LoadFallbackTranslationsListener
         }
 
         $save = true;
+
         foreach ($translateFields as $translateField) {
             if (!empty($activeLangModel->$translateField)) {
                 $save = false;
@@ -69,11 +72,12 @@ class LoadFallbackTranslationsListener
 
         if ($save) {
             if ($mode === 'insert') {
-                Database::getInstance()->prepare('INSERT INTO ' . $dc->table . ' %s')->set($params)->execute();
+                Database::getInstance()->prepare('INSERT INTO '.$dc->table.' %s')->set($params)->execute();
             } else {
-                Database::getInstance()->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ? LIMIT 1')
+                Database::getInstance()->prepare('UPDATE '.$dc->table.' %s WHERE id = ? LIMIT 1')
                     ->set($params)
-                    ->execute((int)$activeLangModel->id);
+                    ->execute((int) $activeLangModel->id)
+                ;
             }
         }
     }
@@ -81,12 +85,12 @@ class LoadFallbackTranslationsListener
     protected function getActiveLang(string $table, int $id): string
     {
         $objSessionBag = $this->requestStack->getSession()->getBag('contao_backend');
-        $sessionKey = 'dc_multilingual:' . $table . ':' . $id;
+        $sessionKey = 'dc_multilingual:'.$table.':'.$id;
 
         return $objSessionBag->get($sessionKey) ?? $this->config->getDefaultLanguage();
     }
 
-    protected function getModel(string $table, int $id): ?Model
+    protected function getModel(string $table, int $id): Model|null
     {
         /** @var Model $class */
         $class = Model::getClassFromTable($table);

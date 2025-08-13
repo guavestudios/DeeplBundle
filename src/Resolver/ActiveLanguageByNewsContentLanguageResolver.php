@@ -17,13 +17,13 @@ class ActiveLanguageByNewsContentLanguageResolver implements ActiveLanguageResol
         return $dataContainer->table === ContentModel::getTable() && Input::get('do') === 'news';
     }
 
-    public function resolve(DataContainer $dataContainer): ?string
+    public function resolve(DataContainer $dataContainer): string|null
     {
-        $content = ContentModel::findOneBy('id', (int)Input::get('id'));
+        $content = ContentModel::findOneBy('id', (int) Input::get('id'));
 
-        $news = NewsModel::findOneBy('id', (int)$content->pid);
+        $news = NewsModel::findOneBy('id', (int) $content->pid);
 
-        $newsArchive = NewsArchiveModel::findOneBy('id', (int)$news->pid);
+        $newsArchive = NewsArchiveModel::findOneBy('id', (int) $news->pid);
 
         return $newsArchive->language ?? null;
     }

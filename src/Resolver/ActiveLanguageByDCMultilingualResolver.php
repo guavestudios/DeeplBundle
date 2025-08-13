@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Guave\DeeplBundle\Resolver;
 
 use Contao\DataContainer;
@@ -20,10 +22,11 @@ class ActiveLanguageByDCMultilingualResolver implements ActiveLanguageResolverIn
         return $dataContainer instanceof Multilingual;
     }
 
-    public function resolve(DataContainer $dataContainer): ?string
+    public function resolve(DataContainer $dataContainer): string|null
     {
         $objSessionBag = $this->requestStack->getSession()->getBag('contao_backend');
-        $sessionKey = 'dc_multilingual:' . $dataContainer->table . ':' . $dataContainer->id;
+        $sessionKey = 'dc_multilingual:'.$dataContainer->table.':'.$dataContainer->id;
+
         if ($objSessionBag->get($sessionKey)) {
             return $objSessionBag->get($sessionKey);
         }
