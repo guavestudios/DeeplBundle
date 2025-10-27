@@ -41,11 +41,10 @@ class DeeplApi
             '/v2/translate',
             [
                 'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'DeepL-Auth-Key '.$this->apiKey,
                 ],
-                'form_params' => [
-                    'auth_key' => $this->apiKey,
-                    'text' => $text,
+                'json' => [
+                    'text' => [$text],
                     'target_lang' => $targetLang,
                     'source_lang' => $sourceLang,
                 ],
