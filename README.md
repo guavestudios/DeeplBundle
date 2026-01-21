@@ -4,6 +4,11 @@ Adds support for [deepl](https://deepl.com) translation API in DCA input fields.
 
 Also supports [Multilingual Data Container](https://github.com/terminal42/contao-DC_Multilingual)
 
+## Requirements
+
+- Contao 5.0+
+- PHP 8.1+
+
 ## Install
 
 ### Install Contao bundle

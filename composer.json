@@ -1,6 +1,6 @@
 {
 	"name": "guave/deepl-bundle",
-	"description": "Adds support for deepl.com translation to contao dca input fields",
+	"description": "Adds support for deepl.com translation to Contao 5.0+ dca input fields",
 	"license": "ISC",
 	"type": "contao-bundle",
 	"homepage": "https://www.guaveinteractive.ch",
@@ -10,11 +10,11 @@
 	},
 	"require": {
 		"php": "^8.1",
-		"contao/core-bundle": "^4.13 || ^5.0",
+		"contao/core-bundle": "^5.0",
 		"guzzlehttp/guzzle": "^6.0 || ^7.0",
-		"symfony/config": "^5.4 || ^6.4 || ^7.0",
-		"symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
-		"symfony/http-kernel": "^5.4 || ^6.4 || ^7.0",
+		"symfony/config": "^6.4 || ^7.4",
+		"symfony/dependency-injection": "^6.4 || ^7.4",
+		"symfony/http-kernel": "^6.4 || ^7.4",
 		"terminal42/contao-changelanguage": "^3.7",
 		"terminal42/dc_multilingual": "^4.0 || ^5.0"
 	},
@@ -23,7 +23,7 @@
 		"contao/manager-plugin": "^2.3.1",
 		"phpunit/phpunit": "^9.6",
 		"roave/security-advisories": "dev-latest",
-		"symfony/phpunit-bridge": "^5.4 || ^6.4 || ^7.0"
+		"symfony/phpunit-bridge": "^6.4 || ^7.4"
 	},
 	"conflict": {
 		"contao/manager-plugin": "<2.0 || >=3.0"
