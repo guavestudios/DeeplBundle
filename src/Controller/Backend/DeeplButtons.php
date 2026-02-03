@@ -14,7 +14,9 @@ use Guave\DeeplBundle\Resolver\ActiveLanguageResolverInterface;
 class DeeplButtons extends Backend
 {
     protected iterable $activeLanguageResolver;
+
     protected string $activeLang;
+
     protected Config $config;
 
     public function __construct(Config $config, iterable $activeLanguageResolver)
@@ -69,22 +71,22 @@ class DeeplButtons extends Backend
 
         return $this->getMulticolumnTranslateButton(
             $field,
-            $this->config->getTables()[$dc->table]['multiColumnFields'][$field]['fields']
+            $this->config->getTables()[$dc->table]['multiColumnFields'][$field]['fields'],
         );
     }
 
     public function addTranslateAllButton(array $arrButtons): array
     {
-        $arrButtons['translateAll'] = sprintf(
+        $arrButtons['translateAll'] = \sprintf(
             '<button type="button" data-translate-all data-translate-source-lang="%s" data-translate-target-lang="%s" class="tl_submit" accesskey="a">%s</button>',
             $this->config->getDefaultLanguage(),
             $this->activeLang,
-            sprintf(
+            \sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translateAll'][0],
                 $this->config->getDefaultLanguage(),
                 $this->activeLang,
-                Image::getHtml('pasteinto.svg')
-            )
+                Image::getHtml('pasteinto.svg'),
+            ),
         );
 
         return $arrButtons;
@@ -92,34 +94,34 @@ class DeeplButtons extends Backend
 
     public function getTranslateButton(string $field): string
     {
-        return sprintf(
+        return \sprintf(
             '<span data-translate-field="%s" data-translate-source-lang="%s" data-translate-target-lang="%s">%s</span>',
             $field,
             $this->config->getDefaultLanguage(),
             $this->activeLang,
-            sprintf(
+            \sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
                 $this->config->getDefaultLanguage(),
                 $this->activeLang,
-                Image::getHtml('pasteinto.svg')
-            )
+                Image::getHtml('pasteinto.svg'),
+            ),
         );
     }
 
     public function getMulticolumnTranslateButton(string $field, array $fields): string
     {
-        return sprintf(
+        return \sprintf(
             '<span data-translate-multicol="%s" data-translate-fields="%s" data-translate-source-lang="%s" data-translate-target-lang="%s">%s</span>',
             $field,
             implode(',', $fields),
             $this->config->getDefaultLanguage(),
             $this->activeLang,
-            sprintf(
+            \sprintf(
                 $GLOBALS['TL_LANG']['guave_deepl']['translate'][0],
                 $this->config->getDefaultLanguage(),
                 $this->activeLang,
-                Image::getHtml('pasteinto.svg')
-            )
+                Image::getHtml('pasteinto.svg'),
+            ),
         );
     }
 

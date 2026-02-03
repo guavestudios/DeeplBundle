@@ -77,7 +77,7 @@ class MultilingualModel extends Multilingual
     public static function getRootPageLanguages(): array
     {
         $objPages = Database::getInstance()->execute(
-            "SELECT DISTINCT language FROM tl_page WHERE type='root' AND language != ''"
+            "SELECT DISTINCT language FROM tl_page WHERE type='root' AND language != ''",
         );
         $languages = $objPages->fetchEach('language');
 
@@ -85,7 +85,7 @@ class MultilingualModel extends Multilingual
             $languages,
             static function (&$value): void {
                 $value = str_replace('-', '_', $value);
-            }
+            },
         );
 
         asort($languages);

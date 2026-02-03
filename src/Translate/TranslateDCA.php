@@ -19,6 +19,7 @@ use Terminal42\DcMultilingualBundle\Model\Multilingual;
 class TranslateDCA
 {
     protected Config $config;
+
     protected DeeplApi $deeplApi;
 
     public function __construct(Config $config, DeeplApi $deeplApi)
@@ -116,7 +117,7 @@ class TranslateDCA
             dump(debug_backtrace()[1]['class'].':'.debug_backtrace()[1]['function']);
             dump(debug_backtrace()[2]['class'].':'.debug_backtrace()[2]['function']);
             dump(debug_backtrace()[3]['class'].':'.debug_backtrace()[3]['function']);
-            dump(\get_class($model), $params);
+            dump($model::class, $params);
             dd($e->getMessage());
         }
     }
@@ -167,7 +168,7 @@ class TranslateDCA
         [$pageId, $filter] = explode('|', $pageString, 2);
         $pageId = $this->getTranslatePage((int) $pageId, $toLang);
 
-        return sprintf('{{%s::%s|%s}}', $insertTag, $pageId, $filter);
+        return \sprintf('{{%s::%s|%s}}', $insertTag, $pageId, $filter);
     }
 
     public function getTranslatePage(int|null $value, string $toLang): int|null

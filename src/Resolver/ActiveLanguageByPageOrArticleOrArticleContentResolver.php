@@ -42,7 +42,7 @@ class ActiveLanguageByPageOrArticleOrArticleContentResolver implements ActiveLan
         $article = ArticleModel::findOneBy('id', $id);
 
         if (!$article) {
-            throw new NotFoundHttpException(sprintf('page with id %s not found', $id));
+            throw new NotFoundHttpException(\sprintf('page with id %s not found', $id));
         }
 
         return $this->getRootLanguageFromPage((int) $article->pid);
@@ -53,7 +53,7 @@ class ActiveLanguageByPageOrArticleOrArticleContentResolver implements ActiveLan
         $page = PageModel::findOneBy('id', $id);
 
         if (!$page) {
-            throw new NotFoundHttpException(sprintf('page with id %s not found', $id));
+            throw new NotFoundHttpException(\sprintf('page with id %s not found', $id));
         }
         $page->loadDetails();
 

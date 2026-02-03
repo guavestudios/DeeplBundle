@@ -15,6 +15,7 @@ use Terminal42\DcMultilingualBundle\Driver as Multilingual;
 class LoadFallbackTranslationsListener
 {
     protected Config $config;
+
     protected RequestStack $requestStack;
 
     public function __construct(Config $config, RequestStack $requestStack)
@@ -95,6 +96,6 @@ class LoadFallbackTranslationsListener
         /** @var Model $class */
         $class = Model::getClassFromTable($table);
 
-        return $class::findByPk($id);
+        return $class::findById($id);
     }
 }

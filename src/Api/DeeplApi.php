@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DeeplApi
 {
     protected string $apiKey;
+
     private Client $client;
 
     public function __construct(string $deeplApiKey, Config $config)
@@ -28,7 +29,7 @@ class DeeplApi
             [
                 'base_uri' => $url,
                 'timeout' => 8.0,
-            ]
+            ],
         );
 
         $this->apiKey = $deeplApiKey;
@@ -42,20 +43,17 @@ class DeeplApi
         $sourceLang = str_replace('_', '-', strtoupper($sourceLang));
         $targetLang = str_replace('_', '-', strtoupper($targetLang));
 
-        $response = $this->client->post(
-            '/v2/translate',
-            [
-                'headers' => [
-                    'Authorization' => 'DeepL-Auth-Key '.$this->apiKey,
-                ],
-                'json' => [
-                    'text' => [$text],
-                    'target_lang' => $targetLang,
-                    'source_lang' => $sourceLang,
-                ],
-                'exceptions' => false,
-            ]
-        );
+        $response = $this->client->post('/v2/translate', [
+            'headers' => [
+                'Authorization' => 'DeepL-Auth-Key '.$this->apiKey,
+            ],
+            'json' => [
+                'text' => [$text],
+                'target_lang' => $targetLang,
+                'source_lang' => $sourceLang,
+            ],
+            'exceptions' => false,
+        ]);
 
         if ($response->getStatusCode() === Response::HTTP_OK) {
             return $this->handleResponse($response);
