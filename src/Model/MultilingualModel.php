@@ -35,10 +35,7 @@ class MultilingualModel extends Multilingual
         $objStatement = Database::getInstance()->prepare($query);
 
         $objStatement = static::preFind($objStatement);
-        $objResult = $objStatement->execute([
-            $langPid,
-            $language,
-        ]);
+        $objResult = $objStatement->execute($langPid, $language);
 
         if ($objResult->numRows < 1) {
             return [];
@@ -58,10 +55,7 @@ class MultilingualModel extends Multilingual
         $objStatement = Database::getInstance()->prepare($query);
 
         $objStatement = static::preFind($objStatement);
-        $objResult = $objStatement->execute([
-            $id,
-            '',
-        ]);
+        $objResult = $objStatement->execute($id, '');
 
         if ($objResult->numRows < 1) {
             return [];
